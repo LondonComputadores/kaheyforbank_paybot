@@ -4,6 +4,8 @@
 
 """
 Basic example for a bot that can receive payment from user.
+
+Exemplo básico de um robô que pode receber pagamento do usuário.
 """
 
 import logging
@@ -20,15 +22,15 @@ logger = logging.getLogger(__name__)
 
 
 def start_callback(update, context):
-    msg = "Use /shipping to get an invoice for shipping-payment, "
-    msg += "or /noshipping for an invoice without shipping."
+    msg = "Use /enviar para obter uma fatura para pagamento de envio, "
+    msg += "or /coletar para uma fatura sem cobrança de envio."
     update.message.reply_text(msg)
 
 
 def start_with_shipping_callback(update, context):
     chat_id = update.message.chat_id
-    title = "Payment Example"
-    description = "Payment Example using python-telegram-bot"
+    title = "Pagamento"
+    description = "Pagamento de envio usando o python-telegram-bot"
     # select a payload just for you to recognize its the donation from your bot
     payload = "Custom-Payload"
     # In order to get a provider_token see https://core.telegram.org/bots/payments#getting-a-token
@@ -52,7 +54,7 @@ def start_with_shipping_callback(update, context):
 def start_without_shipping_callback(update, context):
     chat_id = update.message.chat_id
     title = "Payment Example"
-    description = "Payment Example using python-telegram-bot"
+    description = "Pagamento de coleta usando o python-telegram-bot"
     # select a payload just for you to recognize its the donation from your bot
     payload = "Custom-Payload"
     # In order to get a provider_token see https://core.telegram.org/bots/payments#getting-a-token
@@ -75,7 +77,7 @@ def shipping_callback(update, context):
     # check the payload, is this from your bot?
     if query.invoice_payload != 'Custom-Payload':
         # answer False pre_checkout_query
-        query.answer(ok=False, error_message="Something went wrong...")
+        query.answer(ok=False, error_message="Algo Deu Errado. Tente Novamente, Por Favor!")
         return
     else:
         options = list()
@@ -93,7 +95,7 @@ def precheckout_callback(update, context):
     # check the payload, is this from your bot?
     if query.invoice_payload != 'Custom-Payload':
         # answer False pre_checkout_query
-        query.answer(ok=False, error_message="Something went wrong...")
+        query.answer(ok=False, error_message="Algo Deu Errado. Tente Novamente, Por Favor!")
     else:
         query.answer(ok=True)
 
@@ -101,7 +103,7 @@ def precheckout_callback(update, context):
 # finally, after contacting the payment provider...
 def successful_payment_callback(update, context):
     # do something after successfully receiving payment?
-    update.message.reply_text("Obrigado pelo seu pagamento e a Carrefour Bank agradece!")
+    update.message.reply_text("Obrigado pelo seu pagamento! Alexandre Paes e a Carrefour Bank agradecem!")
 
 
 def main():
@@ -114,11 +116,11 @@ def main():
     dp = updater.dispatcher
 
     # simple start function
-    dp.add_handler(CommandHandler("start", start_callback))
+    dp.add_handler(CommandHandler("pagar", start_callback))
 
     # Add command handler to start the payment invoice
-    dp.add_handler(CommandHandler("shipping", start_with_shipping_callback))
-    dp.add_handler(CommandHandler("noshipping", start_without_shipping_callback))
+    dp.add_handler(CommandHandler("enviar", start_with_shipping_callback))
+    dp.add_handler(CommandHandler("coletar", start_without_shipping_callback))
 
     # Optional handler if your product requires shipping
     dp.add_handler(ShippingQueryHandler(shipping_callback))

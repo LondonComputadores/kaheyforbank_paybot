@@ -38,7 +38,7 @@ with codecs.open('README.rst', 'r', 'utf-8') as fd:
     setup(name='python-telegram-bot',
           version=__version__,
           author='Alexandre Paes',
-          author_email='devs@python-telegram-bot.org',
+          author_email='alexpaes.itsolutions@gmail.com',
           license='LGPLv3',
           url='https://python-telegram-bot.org/',
           keywords='python telegram bot api wrapper',
